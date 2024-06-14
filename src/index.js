@@ -1,2 +1,7 @@
+import { initMongoDB } from './db/initMongoDB.js';
 import { server } from './server.js';
-server();
+
+(async () => {
+  await initMongoDB();
+  server();
+})();
