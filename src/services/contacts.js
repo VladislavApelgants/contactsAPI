@@ -31,7 +31,6 @@ export async function getAllContacts({
       .sort({ [sortBy]: sortOrder })
       .exec(),
   ]);
-  console.log('😎 ~ contactsCount:', contactsCount);
 
   const paginationData = calculatePaginationData(contactsCount, perPage, page);
 
