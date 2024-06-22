@@ -1,7 +1,6 @@
 import cors from 'cors';
 import 'dotenv/config';
 import express from 'express';
-import pino from 'pino-http';
 import { errorHandler } from './middlewares/errorHandler.js';
 import { notFoundHandler } from './middlewares/notFoundHandler.js';
 import contactsRouter from './routers/contacts.js';
@@ -13,17 +12,17 @@ export const server = () => {
   const app = express();
   app.use(cors());
   app.use(express.json());
-  app.use(
-    pino({
-      transport: {
-        target: 'pino-pretty',
-        options: {
-          colorize: true,
-          ignore: 'res, remotePort, remoteAddress',
-        },
-      },
-    }),
-  );
+  // app.use(
+  //   pino({
+  //     transport: {
+  //       target: 'pino-pretty',
+  //       options: {
+  //         colorize: true,
+  //         ignore: 'res, remotePort, remoteAddress',
+  //       },
+  //     },
+  //   }),
+  // );
 
   app.use(contactsRouter);
 
