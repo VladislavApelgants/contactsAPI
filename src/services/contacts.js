@@ -8,11 +8,12 @@ export async function getAllContacts({
   sortOrder = SORT_ORDER.ASC,
   sortBy = '_id',
   filter = {},
+  userId,
 }) {
   const limit = perPage;
   const skip = (page - 1) * perPage;
 
-  const contactsQuery = Contact.find();
+  const contactsQuery = Contact.find({ userId });
 
   if (filter.type) {
     contactsQuery.where('contactType').equals(filter.type);
@@ -23,8 +24,8 @@ export async function getAllContacts({
   }
 
   const [contactsCount, contacts] = await Promise.all([
-    Contact.find().merge(contactsQuery).countDocuments(),
-    Contact.find()
+    Contact.find({ userId }).merge(contactsQuery).countDocuments(),
+    Contact.find({ userId })
       .merge(contactsQuery)
       .skip(skip)
       .limit(limit)
@@ -40,22 +41,23 @@ export async function getAllContacts({
   };
 }
 
-export async function getContactById(id) {
-  return await Contact.findOne({ _id: id });
+export async function getContactById(query) {
+  return await Contact.findOne(query);
 }
 
 export async function createContact(payload) {
   return await Contact.create(payload);
 }
 
-export async function deleteContact(id) {
-  return await Contact.findByIdAndDelete(id);
+export async function deleteContact(query) {
+  return await Contact.findOneAndDelete(query);
 }
 
-export async function updateContact(id, payload) {
-  return await Contact.findByIdAndUpdate(id, payload);
+export async function updateContact(query, payload) {
+  return await Contact.findOneAndUpdate(query, payload);
 }
 
+// TODO Через агригацию
 // import { SORT_ORDER } from '../constants/index.js';
 // import { Contact } from '../db/models/contact.js';
 // import { calculatePaginationData } from '../utils/calculatePaginationData.js';

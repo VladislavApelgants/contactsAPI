@@ -1,9 +1,10 @@
+import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import 'dotenv/config';
 import express from 'express';
 import { errorHandler } from './middlewares/errorHandler.js';
 import { notFoundHandler } from './middlewares/notFoundHandler.js';
-import contactsRouter from './routers/contacts.js';
+import router from './routers/index.js';
 import { env } from './utils/env.js';
 
 const PORT = Number(env('PORT', 3000));
@@ -23,8 +24,9 @@ export const server = () => {
   //     },
   //   }),
   // );
+  app.use(cookieParser());
 
-  app.use(contactsRouter);
+  app.use(router);
 
   app.use('*', notFoundHandler);
 

@@ -3,34 +3,36 @@ import {
   createContactShema,
   updateContactShema,
 } from '../../validation/contacts.js';
-import {
-  createContactController,
-  deleteContactByIdController,
-  getAllContactsController,
-  getContactByIdController,
-  updateContactByIdController,
-} from '../controllers/contacts.js';
+import { contactController } from '../controllers/index.js';
+import { authenticate } from '../middlewares/authenticate.js';
 import { isValidId } from '../middlewares/isValidId.js';
 import { validateBody } from '../middlewares/validateBody.js';
 import { ctrlWrapper } from '../utils/ctrlWrapper.js';
 
 const router = Router();
+router.use(authenticate);
+router.get('/', ctrlWrapper(contactController.getAllContactsController));
 
-router.get('/contacts', ctrlWrapper(getAllContactsController));
-
-router.get('/contacts/:id', isValidId, ctrlWrapper(getContactByIdController));
+router.get(
+  '/:id',
+  isValidId,
+  ctrlWrapper(contactController.getContactByIdController),
+);
 
 router.post(
-  '/contacts',
+  '/',
   validateBody(createContactShema),
-  ctrlWrapper(createContactController),
+  ctrlWrapper(contactController.createContactController),
 );
-router.delete('/contacts/:id', ctrlWrapper(deleteContactByIdController));
+router.delete(
+  '/:id',
+  ctrlWrapper(contactController.deleteContactByIdController),
+);
 
 router.patch(
-  '/contacts/:id',
+  '/:id',
   validateBody(updateContactShema),
-  ctrlWrapper(updateContactByIdController),
+  ctrlWrapper(contactController.updateContactByIdController),
 );
 
 export default router;
