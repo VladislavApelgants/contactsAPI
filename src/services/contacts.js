@@ -54,7 +54,7 @@ export async function deleteContact(query) {
 }
 
 export async function updateContact(query, payload) {
-  return await Contact.findOneAndUpdate(query, payload);
+  return await Contact.findOneAndUpdate(query, payload, { new: true });
 }
 
 // TODO Через агригацию
