@@ -1,13 +1,17 @@
 import { ONE_DAY } from '../constants/index.js';
 import { userServices } from '../services/index.js';
 import {
+  loginOrSignupWithGoogle,
   logoutUser,
   refreshUserSession,
   requestResetToken,
   resetPassword,
 } from '../services/users.js';
+import { generateAuthUrl } from '../utils/googleOAuth2.js';
 
 const setupSession = (res, session) => {
+  console.log('😎 ~ setupSession ~ session:', session);
+  console.log('😎 ~ setupSession ~ res:', res);
   res.cookie('refreshToken', session.refreshToken, {
     httpOnly: true,
     expires: new Date(Date.now() + ONE_DAY),
@@ -82,5 +86,28 @@ export const resetPasswordController = async (req, res) => {
     message: 'Password was successfully reset!',
     status: 200,
     data: {},
+  });
+};
+
+export const getGoogleOAuthUrlController = async (req, res) => {
+  const url = generateAuthUrl();
+  res.json({
+    status: '200',
+    message: 'Successfully get Google OAuth url!',
+    data: {
+      url,
+    },
+  });
+};
+
+export const loginWithGoogleController = async (req, res) => {
+  const session = await loginOrSignupWithGoogle(req.body.code);
+  setupSession(res, session);
+  res.json({
+    status: 200,
+    message: 'Successfully logged in via Google OAuth!',
+    data: {
+      accessToken: session.accessToken,
+    },
   });
 };

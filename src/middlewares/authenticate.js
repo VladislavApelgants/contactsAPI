@@ -34,6 +34,7 @@ export const authenticate = async (req, res, next) => {
 
   const user = await User.findById(session.userId);
   if (!user) {
+    console.log('not');
     next(createHttpError(401));
     return;
   }
