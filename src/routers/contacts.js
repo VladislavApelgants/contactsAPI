@@ -26,11 +26,13 @@ router.post(
 );
 router.delete(
   '/:id',
+  isValidId,
   ctrlWrapper(contactController.deleteContactByIdController),
 );
 
 router.patch(
   '/:id',
+  isValidId,
   validateBody(updateContactShema),
   ctrlWrapper(contactController.updateContactByIdController),
 );
