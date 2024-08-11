@@ -10,8 +10,6 @@ import {
 import { generateAuthUrl } from '../utils/googleOAuth2.js';
 
 const setupSession = (res, session) => {
-  console.log('😎 ~ setupSession ~ session:', session);
-  console.log('😎 ~ setupSession ~ res:', res);
   res.cookie('refreshToken', session.refreshToken, {
     httpOnly: true,
     expires: new Date(Date.now() + ONE_DAY),

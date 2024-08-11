@@ -1,0 +1,8 @@
+type: object
+required:
+  - email
+properties:
+  email:
+    description: "User email"
+    type: string
+    example: "qwe@mail.com"

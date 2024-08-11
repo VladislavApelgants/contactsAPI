@@ -1,0 +1,70 @@
+tags:
+  - Contacts
+summary: Change contact by id
+operationId: changeContact
+description: 'Change contact by id'
+security:
+  - bearerAuth: []
+parameters:
+  - in: path
+    name: id
+    required: true
+    schema:
+      type: string
+      example: '65ca67e7ae7f10c88b598384'
+requestBody:
+  content:
+    multipart/form-data:
+      schema:
+        type: object
+        properties:
+          name:
+            description: "Contact's name"
+            type: string
+            example: 'John Doe'
+          phoneNumber:
+            description: "Contact's phoneNumber"
+            type: string
+            example: "456-78-89"
+          email:
+            description: "Contact's email"
+            type: string
+            example: "qwe@mail.com"
+          isFavourite:
+            description: "Contact's isFavourite"
+            type: string
+            example: true
+          contactType:
+            description: "Contact's contactType"
+            type: string
+            enum: ['work', 'home', 'personal']
+            example: 'home'
+          photo:
+            description: "Contact's photo"
+            type: string
+            format: binary
+responses:
+  '200':
+    description: 'Change contact by id'
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - status
+            - message
+            - data
+          properties:
+            status:
+              type: integer
+              example: 200
+            message:
+              type: string
+              example: Successfully changed contact with id 65ca67e7ae7f10c88b598384!
+            data:
+              type: object
+              $ref: '../../../components/contacts/schemas/contact.yaml'
+  '404':
+    $ref: '../../../components/contacts/responses/404.yaml'
+  '401':
+    $ref: '../../../components/contacts/responses/401.yaml'

@@ -1,0 +1,52 @@
+tags:
+  - Auth
+summary: Refresh user
+operationId: refreshUser
+description: 'Refresh user'
+security: []
+parameters:
+  - in: cookie
+    name: sessionId
+    required: true
+    schema:
+      type: string
+    example: abc123
+    description: Session ID of the user.
+responses:
+  '200':
+    description: Refresh User
+    headers:
+      Set-Cookie:
+        description: Cookies set after successful Refresh
+        schema:
+          type: array
+          items:
+            type: string
+            example: |
+              sessionId=abc123; Path=/; HttpOnly
+              refreshToken=xyz456; Path=/; HttpOnly
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - status
+            - message
+            - data
+          properties:
+            status:
+              type: integer
+              example: 200
+            message:
+              type: string
+              example: Successfully Refresh a user!
+            data:
+              type: object
+              properties:
+                accessToken:
+                  type: string
+                  example: "UrCee/WOG3poAeYavpRegTOQwySf9zK8HCajm4in"
+  '404':
+    $ref: '../../components/users/responses/404User.yaml'
+  '401':
+    $ref: '../../components/users/responses/401User.yaml'
