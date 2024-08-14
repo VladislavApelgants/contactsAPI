@@ -11,10 +11,14 @@ import router from './routers/index.js';
 import { env } from './utils/env.js';
 
 const PORT = Number(env('PORT', 3000));
+const corsOptions = {
+  origin: 'http://localhost:5173', // Укажите ваш домен фронтенда
+  credentials: true, // Разрешить отправку куков
+};
 
 export const server = () => {
   const app = express();
-  app.use(cors());
+  app.use(cors(corsOptions));
   app.use(express.json());
   app.use(
     pino({
